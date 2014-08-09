@@ -34,14 +34,31 @@ _.assign(SlashCommand.prototype, {
         this._generalReply();
         this.res.end(message);
     },
-    replyChannel: function () {
-        this._generalReply();
-        this.res.end();
+    tryReplyUser: function(message) {
+        if (this.hasReplied)
+            return false;
+
+        this.replyUser(message);
+
+        return true;
     },
+    /* TODO
+     replyChannel: function () {
+     this._generalReply();
+     this.res.end();
+     },*/
     error: function (message) {
         this._generalReply();
         this.res.writeHead(400);
         this.res.end(message);
+    },
+    tryError: function (message) {
+        if (this.hasReplied)
+            return false;
+
+        this.error(message);
+
+        return true;
     }
 });
 
